@@ -68,15 +68,6 @@ async function imageFrameSource({ verbose, params, width, height }) {
     top: height / 2,
   });
 
-  // Blurred version
-  const blurredImg = getImg();
-  blurredImg.filters = [new fabric.Image.filters.Resize({ scaleX: 0.01, scaleY: 0.01 })];
-  blurredImg.applyFilters();
-
-  if (blurredImg.height > blurredImg.width) blurredImg.scaleToWidth(width);
-  else blurredImg.scaleToHeight(height);
-
-
   async function onRender(progress, canvas) {
     const { zoomDirection = 'in', zoomAmount = 0.1 } = params;
 
@@ -89,12 +80,10 @@ async function imageFrameSource({ verbose, params, width, height }) {
     if (img.height > img.width) img.scaleToHeight(height * scaleFactor);
     else img.scaleToWidth(width * scaleFactor);
 
-    canvas.add(blurredImg);
     canvas.add(img);
   }
 
   function onClose() {
-    blurredImg.dispose();
     // imgData.dispose();
   }
 
